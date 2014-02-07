@@ -361,7 +361,7 @@ module SRP
 
       # calculate match
       @M = "%x" % SRP.calc_M(username, xsalt, @A, @B, @K, @N, @g)
-
+      p "M should be: #{@M}"
       if @M == client_M
         # authentication succeeded
         @H_AMK = "%x" % SRP.calc_H_AMK(@A, @M, @K, @N, @g)
@@ -383,6 +383,8 @@ module SRP
     def generate_B xverifier
       v = xverifier.to_i(16)
       @b ||= random_bignum
+      @b = 100247955044683394220903308333713893274808072532594346274728958924327703412243
+      p "b: #{b}"
       @B = "%x" % SRP.calc_B(@b, k, v, @N, @g)
     end
   end # Verifier

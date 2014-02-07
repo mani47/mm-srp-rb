@@ -1,24 +1,32 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "srp-rb/version"
+# stub: srp-rb 1.0.2 ruby lib
 
 Gem::Specification.new do |s|
-  s.name        = "srp-rb"
-  s.version     = Srp::Rb::VERSION
-  s.authors     = ["lamikae"]
-  s.email       = [""]
-  s.homepage    = ""
-  s.summary     = %q{Secure Remote Password protocol SRP-6a.}
-  s.description = %q{
-    Ruby implementation of the Secure Remote Password protocol (SRP-6a).
-    SRP is a cryptographically strong authentication protocol for 
-    password-based, mutual authentication over an insecure network connection.}
+  s.name = "srp-rb"
+  s.version = "1.0.2"
 
-  s.rubyforge_project = "srp-rb"
-
-  s.files         = Dir.glob("lib/**/*")
-  s.test_files    = Dir.glob("spec/*")
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
+  s.authors = ["lamikae"]
+  s.date = "2014-02-05"
+  s.description = "\n    Ruby implementation of the Secure Remote Password protocol (SRP-6a).\n    SRP is a cryptographically strong authentication protocol for \n    password-based, mutual authentication over an insecure network connection."
+  s.email = [""]
+  s.files = ["lib/srp-rb", "lib/srp-rb.rb", "lib/srp-rb/version.rb", "lib/srp.rb", "spec/srp_spec.rb"]
+  s.homepage = ""
+  s.rubyforge_project = "srp-rb"
+  s.rubygems_version = "2.2.1"
+  s.summary = "Secure Remote Password protocol SRP-6a."
+  s.test_files = ["spec/srp_spec.rb"]
 
-  s.add_development_dependency "rspec"
+  if s.respond_to? :specification_version then
+    s.specification_version = 4
+
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_development_dependency(%q<rspec>, [">= 0"])
+    else
+      s.add_dependency(%q<rspec>, [">= 0"])
+    end
+  else
+    s.add_dependency(%q<rspec>, [">= 0"])
+  end
 end
