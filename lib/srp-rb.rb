@@ -431,7 +431,7 @@ module SRP
     # Process initiated authentication challenge.
     # Returns S if authentication is successful, false otherwise.
     # Salt and B should be given in hex.
-    def process_challenge_s username, password, xsalt, xbb
+    def process_challenge_s_hmac username, password, xsalt, xbb
       bb = xbb.to_i(16)
       # SRP-6a safety check
       return false if (bb % @N) == 0
@@ -452,7 +452,8 @@ module SRP
       # calculate verifier
       @H_AMK = "%x" % SRP.calc_H_AMK(@A, @M, @K, @N, @g)
 
-      return @S
+      hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @S.encode("ASCII"), @A.encode("ASCII"))
+      Base64.encode64(hmac)
     end
 
     def verify server_HAMK
