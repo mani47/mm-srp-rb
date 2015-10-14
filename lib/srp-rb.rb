@@ -429,7 +429,7 @@ module SRP
     end
     
     # Process initiated authentication challenge.
-    # Returns S if authentication is successful, false otherwise.
+    # Returns hashed encode64 S if authentication is successful, false otherwise.
     # Salt and B should be given in hex.
     def process_challenge_s_hmac username, password, xsalt, xbb
       bb = xbb.to_i(16)
@@ -454,6 +454,33 @@ module SRP
 
       hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @S.encode("ASCII"), @A.encode("ASCII"))
       Base64.encode64(hmac)
+    end
+    
+    # Process initiated authentication challenge.
+    # Returns S if authentication is successful, false otherwise.
+    # Salt and B should be given in hex.
+    def process_challenge_s username, password, xsalt, xbb
+      bb = xbb.to_i(16)
+      # SRP-6a safety check
+      return false if (bb % @N) == 0
+
+      x = SRP.calc_x(username, password, xsalt)
+      u = SRP.calc_u(@A, xbb, @N)
+
+      # SRP-6a safety check
+      return false if u == 0
+
+      # calculate session key
+      @S = "%x" % SRP.calc_client_S(bb, @a, @k, x, u, @N, @g)
+      @K = SRP.sha1_hex(@S)
+
+      # calculate match
+      @M = "%x" % SRP.calc_M(username, xsalt, @A, xbb, @K, @N, @g)
+
+      # calculate verifier
+      @H_AMK = "%x" % SRP.calc_H_AMK(@A, @M, @K, @N, @g)
+
+      @S
     end
 
     def verify server_HAMK
